@@ -10,7 +10,12 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/bedcount');
+var connectionString = "localhost:27017/expressgui_db";
+if(process.env.OPENSHIFT_MONGODB_DB_URL) {
+    connectionString = process.env.OPENSHIFT_MONGODB_DB_URL + "expressgui";
+}
+mongoose.connect(connectionString);
+
 var db = mongoose.connection;
 // var db = monk('localhost/bedcount');
 
@@ -20,7 +25,10 @@ var bedcount = require('./routes/bedcount.js');
 
 var app = express();
 
-app.listen(8080);
+// Start app
+app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8000, process.env.OPENSHIFT_NODEJS_IP || "localhost", function() {
+    console.log("ExpressGUI running on port "+(process.env.OPENSHIFT_NODEJS_PORT || 8000)+"...");
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
