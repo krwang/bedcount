@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bedcount</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Your Bedcount</h1><br>
+    <h2>Hello <%= shelterName %></h2>
+    <form method="post" action="/logout">
+  		<button id="logoutButton" type="submit">Log Out</button>
+  	</form><br><br>
+
+    <a href="/shelter/features">Edit Shelter Settings</a><br><br>
+
+    <form method="get" action="/shelter/bed">
+      <button id="addBedButton" type="submit">New Bed</button>
+    </form><br><br>
+
+    <p>Total Beds Available: Male - <%= bedObject.numberMale %>, Female - <%= bedObject.numberFemale %>, Gender Neutral - <%= bedObject.numberNeutral %></p> 
+
+    <ul type="none">
+      <% for (var bed in beds) { %>
+        <li><%= beds[bed].name + " (" + beds[bed].type + "): " %> 
+          <a href="/bedcount/occupantprofile?name=<%= beds[bed].occupant.name %>"><%= beds[bed].occupant.name %></a>
+          <%= " (" + beds[bed].occupant.daysLeft + " days left, " + beds[bed].occupant.notInDays + " NIT used)"%>
+          <form method="get" action="/shelter/updatebed">
+            <button type="submit" name="updateBed" value="<%= beds[bed].name %>">Update</button>
+          </form>
+<!--           <form method="get" action='/shelter/comment'>
+            <button type="submit" name="comment" value="<%= beds[bed].occupant.name %>">Comment</button>
+          </form> -->
+
+        </li><br>
+      <% } %>
+    </ul>
+
+  </body>
+</html>

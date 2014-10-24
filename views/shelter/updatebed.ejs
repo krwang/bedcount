@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bedcount</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Update Bed</h1>
+    <form id="updateBedForm" name="addBed" method="POST" action="/shelter/updatebed">
+      Bed Name: <input type="text" name="name" value="<%= bedName %>"></input><br>
+      Occupant Name: <input type="text" name="occupantName" value="<%= occupant %>" autofocus></input><br>
+      Occupant Age: <input type="number" name="occupantAge" min="0" value="<%= age %>"></input><br>
+      Duration of Stay: <input type="number" name="stayDuration" min="0" max="14" value="14"></input><br>
+      Not In Tonight: <input type="checkbox" name="notInTonight"></input><br>
+      <button id="btnSubmit" type="submit">Submit</button>
+  </body>
+</html>

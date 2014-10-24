@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bedcount</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+
+    <h1><%= occupant.name %></h1>
+    <h4><%= occupant.age %> years old</h4>
+    <h3>Current Location:
+      <% if (occupant.daysLeft > 0) %>
+        <%= occupant.currentLoc.shelterName + " (" + occupant.daysLeft + " days left)" %>
+    </h3>
+
+    <form id="commentForm" name="comment" method="post" action="/shelter/comment">
+      Comment: <input type="text" name="comment" autofocus></input>
+      <button id="btnSubmit" type="submit" value="<%= occupant.name %>">Submit</button>
+    </form>
+
+    <ul type="none">
+      <% for (var comment in occupant.comments) %>
+        <li> <%= occupant.comments %>
+    </ul>
+
+  </body>
+</html>

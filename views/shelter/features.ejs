@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bedcount</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Edit Shelter Features</h1>
+    <form id="formAddUser" name="adduser" method="post" action="/shelter/editfeatures">
+      Shelter Address: <input id="inputAddress" type="text" name="address" value="<%= address %>" autofocus></input><br>
+      Available Male Beds: <input id="inputMaleBeds" type="number" name="numberMale" value="<%= beds.numberMale %>" autocomplete="off" min="0"></input><br>
+      Available Female Beds: <input id="inputFemaleBeds" type="number" name="numberFemale" value="<%= beds.numberFemale %>" autocomplete="off" min="0"></input><br>
+      Available Gender Neutral Beds: <input id="inputNeutralBeds" type="number" name="numberNeutral" value="<%= beds.numberNeutral %>" autocomplete="off" min="0"></input><br>
+      <!-- Drinking Status: <input type="radio" name="sober" value="true">Sober</input> -->
+                       <!-- <input type="radio" name="sober" value="false">Not Sober</input><br> -->
+      <button id="btnSubmit" type="submit">Submit</button>
+  </body>
+</html>

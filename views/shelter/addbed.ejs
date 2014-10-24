@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bedcount</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Add a New Bed</h1>
+    <form id="addBedForm" name="addBed" method="post" action="/shelter/bed">
+      Bed type: <input type="radio" name="gender" value="male" checked>Male</input>
+                <input type="radio" name="gender" value="female">Female</input>
+                <input type="radio" name="gender" value="neutral">Gender Neutral</input><br>
+      Bed ID: <input type="text" name="id" autofocus></input><br>
+      <button id="btnSubmit" type="submit">Submit</button>
+  </body>
+</html>
