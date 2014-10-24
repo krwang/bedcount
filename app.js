@@ -7,23 +7,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var mongo = require('mongodb');
-var monk = require('monk');
+// var monk = require('monk');
 var mongoose = require('mongoose');
-
-var connectionString = "localhost:27017/expressgui_db";
-if(process.env.OPENSHIFT_MONGODB_DB_URL) {
-    connectionString = process.env.OPENSHIFT_MONGODB_DB_URL + "expressgui";
-}
-mongoose.connect(connectionString);
-
-var db = mongoose.connection;
-// var db = monk('localhost/bedcount');
 
 var routes = require('./routes/index.js');
 var shelter = require('./routes/shelter.js');
 var bedcount = require('./routes/bedcount.js');
 
 var app = express();
+
+var connectionString = "localhost:27017/bedcount";
+if(process.env.OPENSHIFT_MONGODB_DB_URL) {
+    connectionString = process.env.OPENSHIFT_MONGODB_DB_URL + "bedcount";
+}
+mongoose.connect(connectionString);
+
+var db = mongoose.connection;
+// var db = monk('localhost/bedcount');
 
 // Start app
 app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8000, process.env.OPENSHIFT_NODEJS_IP || "localhost", function() {
