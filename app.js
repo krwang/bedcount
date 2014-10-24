@@ -26,9 +26,7 @@ var db = mongoose.connection;
 // var db = monk('localhost/bedcount');
 
 // Start app
-app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8000, process.env.OPENSHIFT_NODEJS_IP || "localhost", function() {
-    console.log("ExpressGUI running on port "+(process.env.OPENSHIFT_NODEJS_PORT || 8000)+"...");
-});
+app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8000, process.env.OPENSHIFT_NODEJS_IP || "localhost");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

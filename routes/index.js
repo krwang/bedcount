@@ -62,7 +62,7 @@ router.post('/login', function(req, res) {
 })
 
 /* POST to Add User Service */
-router.post('/addaccount', function(req, res) {
+router.post('/signup', function(req, res) {
 
     // Get our form values. These rely on the "name" attributes
     var shelterName = req.body.shelterName;
@@ -96,8 +96,8 @@ router.post('/addaccount', function(req, res) {
                     res.cookie('password', password);
                     res.cookie('beds', beds._id);
                     res.cookie('shelterId', doc._id);
-                    res.location("/shelter/editfeatures");
-                    res.redirect("/shelter/editfeatures");                   
+                    res.location("/shelter/features");
+                    res.redirect("/shelter/features");                   
                 }
             });
         }
