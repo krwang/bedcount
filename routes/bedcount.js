@@ -2,7 +2,7 @@ var express = require('express');
 var utils = require('restberry-utils');
 var router = express.Router();
 
-var models = require('../data/data-mongoose');
+var models = require('../data-mongoose');
 var Shelter = models.Shelter;
 var Beds = models.Beds;
 var Unit = models.Unit;
