@@ -43,15 +43,15 @@ $(document).ready(function() {
 			      					 'Not In Tonight: <input type="checkbox" id="notInTonight" name="notInTonight"></input><br>' +
 								     '</form>',
 							buttons: {
-								cancel: {
-									label: "Cancel",
-								}
+								// cancel: {
+								// 	label: "Cancel",
+								// },
 								success: {
 									label: "Save",
 									callback: function() {
 										console.log("UPDATED");
 										console.log($("#bedName").val());
-										updateBed($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val());
+										updateBed($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val(), rowIndex);
 									}
 								}
 							}
@@ -63,7 +63,7 @@ $(document).ready(function() {
 		updateButtonCell.appendChild(updateButton);
 	}
 
-	var updateBed = function(bedName, occupantName, occupantAge, stayDuration, notInTonight) {
+	var updateBed = function(bedName, occupantName, occupantAge, stayDuration, notInTonight, rowIndex) {
 		$.ajax({
 			url: "/shelter/bed",
 			type: "PUT",
@@ -75,13 +75,10 @@ $(document).ready(function() {
 				notInTonight: notInTonight
 			},
 			success: function(data) {
-				console.log(data);
 				if (data.success) {
-					// var occupantLink = table.rows[rowIndex].cells[3].children("a");
-					// occupantLink.innerHTML = data.bed.occupant.name;
-					// occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=data.bed.occupant.name");
-					window.location.href = data.url;					
-					// console.log("SUCCESS");
+					var occupantLink = table.rows[rowIndex].cells[3].children[0];
+					occupantLink.innerHTML = data.unit.occupant.name;
+					occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=data.bed.occupant.name");
 				}
 				else {
 					bootbox.alert(data.info);
@@ -100,8 +97,8 @@ $(document).ready(function() {
 			},
 			success: function(data) {
 				if (data.success) {
-					window.location.href = data.url;
-					// insertBedToTable(bed);
+					insertBedToTable(data.bed);
+					// window.location.href = data.url;
 				}
 				else {
 					bootbox.alert(data.info);
@@ -154,6 +151,7 @@ $(document).ready(function() {
 	});
 
 	$("#logout").click(function() {
+		console.log("Logging out");
 		$.ajax({
 			url: "/logout",
 			type: "POST",

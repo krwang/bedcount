@@ -41,10 +41,11 @@ router.post('/login', function(req, res) {
     Shelter.findOne({shelterName: shelterName}, function (err, doc) {
         if (err) {
             res.send({
-                success: false
+                success: false,
+                info: "An error occurred"
             });
         }
-        else {
+        else if (doc) {
             // Authenticate with simple password check
             if (doc.password == password) {
 
@@ -60,9 +61,16 @@ router.post('/login', function(req, res) {
             }
             else {
                 res.send({
-                    success: false
+                    success: false,
+                    info: "The sheltername or password is incorrect"
                 });
             }
+        }
+        else {
+            res.send({
+                success: false,
+                info: "The sheltername or password is incorrect"
+            });
         }
     });
 })
