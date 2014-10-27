@@ -16,6 +16,26 @@ router.use(function(req, res, next) {
     }
 });
 
+router.get('/', function (req, res) {
+    Shelter.findOne({shelterName: req.cookies.shelter})
+           .populate("beds")
+           .exec(function(err, shelter) {
+                console.log(shelter);
+                if (shelter) {
+                    res.send({
+                        success: true,
+                        shelter: shelter
+                    });
+                }
+                else {
+                    res.send({
+                        success: false,
+                        info: "An error occured"
+                    });
+                }
+           });
+});
+
 /* GET users listing. */
 router.get('/bed', function (req, res) {
     Unit.findOne({name: req.query.name})
@@ -261,6 +281,7 @@ router.get('/features', function (req, res) {
 
 router.post('/features', function (req, res) {
 
+    console.log(req);
     var address = req.body.address;
     var numberMale = req.body.numberMale;
     var numberFemale = req.body.numberFemale;
@@ -276,8 +297,9 @@ router.post('/features', function (req, res) {
                                              numberNeutral: numberNeutral}},
                                     function(err, beds) {
                                         res.cookie('address', address);
-                                        res.location("/bedcount/homepage");
-                                        res.redirect("/bedcount/homepage");
+                                        res.send({
+                                            success: true
+                                        });
                                     });
                    });
 });

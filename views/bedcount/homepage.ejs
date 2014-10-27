@@ -18,11 +18,14 @@
     <h2>Hello <%= shelterName %></h2>
   	<button id="logout" type="button">Log Out</button><br><br>
 
-    <a href="/shelter/features">Edit Shelter Settings</a><br><br>
+    <button id="settings" type="button">Edit Shelter Settings</button><br><br>
 
     <button id="addbed" type="button">New Bed</button><br><br>
 
-    <p>Total Beds Available: Male - <%= bedObject.numberMale %>, Female - <%= bedObject.numberFemale %>, Gender Neutral - <%= bedObject.numberNeutral %></p> 
+    Total Beds Available:
+    <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
+    <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
+    <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
 
     <table id="bed-table"></table>
 

@@ -17,9 +17,9 @@ router.use(function(req, res, next) {
     }
 });
 
-router.get('/', function (req, res) {
-		res.render('bedcount/homepage', {"shelterName": req.cookies.shelter});
-});
+// router.get('/', function (req, res) {
+// 		res.render('bedcount/homepage', {"shelterName": req.cookies.shelter});
+// });
 
 router.get('/homepage', function (req, res) {
 	var ids = [];
@@ -34,7 +34,7 @@ router.get('/homepage', function (req, res) {
 				result.push.apply(result, beds.maleUnits);
 				result.push.apply(result, beds.femaleUnits);
 				result.push.apply(result, beds.neutralUnits);
-				res.render('bedcount/homepage', {"shelterName": req.cookies.shelter, "beds": result, "bedObject": beds});
+				res.render('bedcount/homepage', {"shelterName": req.cookies.shelter,"bedObject": beds});
 			});
 		});
 });

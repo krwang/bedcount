@@ -113,6 +113,7 @@ $(document).ready(function() {
 			type: "POST",
 			dataType: "json",
 			success: function(data) {
+				console.log(data);
 				if (data.success) {
 					for (var bed in data.beds.beds) {
 						insertBedToTable(data.beds.beds[bed]);
@@ -121,6 +122,46 @@ $(document).ready(function() {
 			}
 		});
 	}();
+
+	var promptSettings = function(shelter) {
+		bootbox.dialog({
+			title: "Edit Shelter Settings",
+			message: '<form id="formAddUser" name="adduser" method="post" action="/shelter/features">' +
+      				 'Shelter Address: <input id="address" type="text" name="address" value="' + shelter.address + '" autofocus></input><br>' +
+      				 'Available Male Beds: <input id="maleBeds" type="number" name="numberMale" value="' + shelter.beds.numberMale + '" autocomplete="off" min="0"></input><br>' +
+      				 'Available Female Beds: <input id="femaleBeds" type="number" name="numberFemale" value="' + shelter.beds.numberFemale + '" autocomplete="off" min="0"></input><br>' +
+      				 'Available Gender Neutral Beds: <input id="neutralBeds" type="number" name="numberNeutral" value="' + shelter.beds.numberNeutral + '" autocomplete="off" min="0"></input><br>' +
+					 '</form>',
+			buttons: {
+				success: {
+					label: "Save",
+					callback: function() {				
+						sendFeatures($("#address").val(), $("#maleBeds").val(), $("#femaleBeds").val(), $("#neutralBeds").val());
+					}
+				}
+			}
+		});		
+	}
+
+	var sendFeatures = function(address, maleBeds, femaleBeds, neutralBeds) {
+		$.ajax({
+			url: "/shelter/features",
+			type: "POST",
+			data: {
+				address: address,
+				numberMale: maleBeds,
+				numberFemale: femaleBeds,
+				numberNeutral: neutralBeds
+			},
+			success: function(data) {
+				if (data.success) {
+					$("#numberMale").text("Male - " + $("#maleBeds").val());
+					$("#numberFemale").text("Female - " + $("#femaleBeds").val());
+					$("#numberNeutral").text("Neutral - " + $("#neutralBeds").val());		
+				}
+			}
+		});
+	}
 
 	$("#addbed").click(function() {
 		bootbox.dialog({
@@ -150,8 +191,22 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#settings").click(function() {
+		$.ajax({
+			url: "/shelter",
+			type: "GET",
+			success: function(data) {
+				if (data.success) {
+					promptSettings(data.shelter);
+				}
+				else {
+					$("#error-message").text(data.info);
+				}
+			}
+		});
+	});
+
 	$("#logout").click(function() {
-		console.log("Logging out");
 		$.ajax({
 			url: "/logout",
 			type: "POST",
