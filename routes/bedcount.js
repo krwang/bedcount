@@ -8,13 +8,17 @@ var Beds = models.Beds;
 var Unit = models.Unit;
 var Occupant = models.Occupant;
 
+router.use(function(req, res, next) {
+    if(req.cookies.shelter) {
+        next();
+    } else {
+        res.location("/");
+        res.redirect("/");
+    }
+});
+
 router.get('/', function (req, res) {
-	if (req.cookies.shelter == undefined || req.cookies.password == undefined) {
-		res.redirect('/');
-	}
-	else{
 		res.render('bedcount/homepage', {"shelterName": req.cookies.shelter});
-	}
 });
 
 router.get('/homepage', function (req, res) {

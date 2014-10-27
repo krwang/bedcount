@@ -10,12 +10,12 @@ var Occupant = models.Occupant;
 /* GET methods */
 
 router.get('/', function (req, res) {
-    if (req.cookies.user == undefined || req.cookies.password == undefined){
+    // if (req.cookies.user == undefined || req.cookies.password == undefined){
         res.render('landingpage');
-    }
-  	else{
-        res.redirect('bedcount/homepage');
-    }
+    // }
+  	// else{
+        // res.redirect('bedcount/homepage');
+    // }
 });
 
 router.get('/landingpage', function (req, res) {
@@ -35,12 +35,14 @@ router.get('/signup', function (req, res) {
     a cookie and redirects to the homepage if login is successful
 */
 router.post('/login', function(req, res) {
-    var shelterName = req.body.shelterName;
+    var shelterName = req.body.sheltername;
     var password = req.body.password;
 
     Shelter.findOne({shelterName: shelterName}, function (err, doc) {
         if (err) {
-            res.send("Cound not find user");
+            res.send({
+                success: false
+            });
         }
         else {
             // Authenticate with simple password check
@@ -51,11 +53,15 @@ router.post('/login', function(req, res) {
                 res.cookie('password', password);
                 res.cookie('beds', doc.beds);
                 res.cookie('shelterId', doc._id);
-                res.location("/bedcount/homepage");
-                res.redirect("/bedcount/homepage");
+                res.send({
+                    url: '/bedcount/homepage',
+                    success: true
+                });
             }
             else {
-                res.send("Username or password is incorrect");
+                res.send({
+                    success: false
+                });
             }
         }
     });
@@ -65,7 +71,7 @@ router.post('/login', function(req, res) {
 router.post('/signup', function(req, res) {
 
     // Get our form values. These rely on the "name" attributes
-    var shelterName = req.body.shelterName;
+    var shelterName = req.body.sheltername;
     var password = req.body.password;
     var email = req.body.email;
     var phoneNumber = req.body.phoneNumber;
@@ -73,10 +79,16 @@ router.post('/signup', function(req, res) {
     // If there is no account with username, the find should return a null doc
     Shelter.findOne({shelterName: shelterName}, function (err, doc) {
         if (err) {
-            res.send("There was a problem adding the information to the database.");
+            res.send({
+                info: "There was a problem adding the information to the database.",
+                success: false
+            });
         }
         else if (doc) {
-            res.send("An account already exists with that username.");
+            res.send({
+                info: "An account already exists with that username.",
+                success: false
+            });
         }
         else {
 
@@ -87,7 +99,10 @@ router.post('/signup', function(req, res) {
             var account = new Shelter({shelterName: shelterName, address: '', password: password, email: email, phoneNumber: phoneNumber, beds: beds});
             account.save(function (err, doc) {
                 if (err) {
-                    res.send("There was a problem adding the information to the database.");
+                    res.send({
+                        info: "An error occured when creating a new account",
+                        success: false,
+                    });
                 }
                 else {
                      // Save user data in cookie and 
@@ -96,8 +111,10 @@ router.post('/signup', function(req, res) {
                     res.cookie('password', password);
                     res.cookie('beds', beds._id);
                     res.cookie('shelterId', doc._id);
-                    res.location("/shelter/features");
-                    res.redirect("/shelter/features");                   
+                    res.send({
+                        url: '/shelter/features',
+                        success: true
+                    });                  
                 }
             });
         }
@@ -111,11 +128,12 @@ router.post('/signup', function(req, res) {
 router.post('/logout', function(req, res) {
     res.clearCookie('shelter');
     res.clearCookie('password');
-    res.clearCookie('address');
     res.clearCookie('beds');
     res.clearCookie('shelterId');
-    res.location("/");
-    res.redirect("/");
+    res.send({
+        url: '/',
+        success: true
+    });
 });
 
 module.exports = router;

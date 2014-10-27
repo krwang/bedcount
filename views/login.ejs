@@ -2,13 +2,24 @@
 <html>
   <head>
     <title>Bedcount</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/login.js"></script>
   </head>
   <body>
     <h1>Login to Existing Account</h1>
-    <form id="formAddUser" name="adduser" method="post" action="/login">
-    	<input id="inputUserName" type="text" placeholder="Shelter Name" name="shelterName" autofocus></input><br>
-    	<input id="inputPassword" type="password" placeholder="Password" name="password" autocomplete="off"></input><br>
-    	<button id="btnSubmit" type="submit">Login</button>
+    <div id="login-inputs">
+    	<input id="sheltername" type="text" placeholder="Shelter Name" name="shelterName" autofocus></input><br>
+    	<input id="password" type="password" placeholder="Password" name="password" autocomplete="off"></input><br>
+    	<button id="login" type="button">Login</button>
+    </div>
+    <div id="error-message"></div>
+    <div id="signup-link"><a href="signup"> New to Bedcount? </a><div>
   </body>
 </html>

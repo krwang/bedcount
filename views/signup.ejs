@@ -2,16 +2,27 @@
 <html>
   <head>
     <title>Bedcount</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+    <script src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/signup.js"></script>  
   </head>
   <body>
     <h1>Create New Account</h1>
-    <form id="formAddUser" name="adduser" method="post" action="/signup">
-    	<input id="inputShelterName" type="text" placeholder="Shelter Name" name="shelterName" autofocus></input><br>
-      <input id="inputPassword" type="password" placeholder="Password" name="password" autocomplete="off"></input><br>
-      <input id="confirmPassword" type="password" placeholder="Confirm Password" name="confirm" autocomplete="off"></input><br>
-    	<input id="inputUserEmail" type="email" placeholder="Email" name="email"></input><br>
-      <input id="inputPhoneNumber" type="tel" placeholder="Phone Number" name="phoneNumber" autocomplete="off"></input><br>
-    	<button id="btnSubmit" type="submit">Create</button>
+    <div id="signup-inputs">
+    	<input id="sheltername" type="text" placeholder="Shelter Name"autofocus></input><br>
+      <input id="password" type="password" placeholder="Password"autocomplete="off"></input><br>
+<!--       <input id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="off"></input><br> -->
+    	<input id="emailaddress" type="email" placeholder="Email"></input><br>
+      <input id="phonenumber" type="tel" placeholder="Phone Number" autocomplete="off"></input><br>
+    	<button id="signup">Create</button>
+    </div>
+    <div id="error-message"></div>
+    <div id="login-link"><a href="/login">Already have an account?</a></div>
   </body>
 </html>

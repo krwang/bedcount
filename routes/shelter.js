@@ -7,14 +7,30 @@ var Beds = models.Beds;
 var Unit = models.Unit;
 var Occupant = models.Occupant;
 
+router.use(function(req, res, next) {
+    if(req.cookies.shelter) {
+        next();
+    } else {
+        res.location("/");
+        res.redirect("/");
+    }
+});
+
 /* GET users listing. */
 router.get('/bed', function (req, res) {
-    res.render('shelter/addbed');
+    Unit.findOne({name: req.query.name})
+        .populate("occupant")
+        .exec(function(err, unit) {
+            console.log(unit);
+            res.send({
+                success: true,
+                unit: unit
+            });
+        });
 });
 
 router.post('/bed', function (req, res) {
 
-    console.log(req.body);
     var type = req.body.gender;
     var name = req.body.id;
 
@@ -29,16 +45,26 @@ router.post('/bed', function (req, res) {
                     beds.maleUnits.push(unit._id);  
                     beds.save(function(err) {
                         if (err) {
-                            res.send("Error adding new bed");
+                            res.send({
+                                success: false,
+                                info: "Error adding new bed"
+                            });
                         }
                         else {
-                            res.location("/bedcount/homepage");
-                            res.redirect("/bedcount/homepage");
+                            res.send({
+                                success: true,
+                                url: "/bedcount/homepage"
+                            })
+                            // res.location("/bedcount/homepage");
+                            // res.redirect("/bedcount/homepage");
                         }
                     });
                 }
                 else {
-                    res.send("Reached Maximum Beds");
+                    res.send({
+                        success: false,
+                        info: "Reached Maximum Beds"
+                    });
                 }
             });
             break;
@@ -48,16 +74,26 @@ router.post('/bed', function (req, res) {
                     beds.femaleUnits.push(unit._id);  
                     beds.save(function(err) {
                         if (err) {
-                            res.send("Error adding new bed");
+                            res.send({
+                                success: false,
+                                info: "Error adding new bed"
+                            });
                         }
                         else {
-                            res.location("/bedcount/homepage");
-                            res.redirect("/bedcount/homepage");
+                            res.send({
+                                success: true,
+                                url: "/bedcount/homepage"
+                            })
+                            // res.location("/bedcount/homepage");
+                            // res.redirect("/bedcount/homepage");
                         }
                     });
                 }
                 else {
-                    res.send("Reached Maximum Beds");
+                    res.send({
+                        success: false,
+                        info: "Reached Maximum Beds"
+                    });
                 }
             }); 
             break;
@@ -67,19 +103,89 @@ router.post('/bed', function (req, res) {
                     beds.neutralUnits.push(unit._id);  
                     beds.save(function(err) {
                         if (err) {
-                            res.send("Error adding new bed");
+                            res.send({
+                                success: false,
+                                info: "Error adding new bed"
+                            });
                         }
                         else {
-                            res.location("/bedcount/homepage");
-                            res.redirect("/bedcount/homepage");
+                            res.send({
+                                success: true,
+                                url: "/bedcount/homepage"
+                            })
+                            // res.location("/bedcount/homepage");
+                            // res.redirect("/bedcount/homepage");
                         }
                     });
                 }
                 else {
-                    res.send("Reached Maximum Beds");
+                    res.send({
+                        success: false,
+                        info: "Reached Maximum Beds"
+                    });
                 }
             });
     } 
+});
+
+router.put('/bed', function (req, res) {
+    var occupantName = req.body.occupantName;
+    var occupantAge = req.body.occupantAge;
+
+    Occupant.findOne({name: occupantName}, function (err, occ) {
+        var newOccupant;
+        if (occ) {
+            if (req.body.notInTonight == "on") {
+                Occupant.update({name: occupantName},
+                                { $set: {age: occupantAge, notInDays: occ.notInDays + 1}},
+                                function (err, doc) {
+                                    newOccupant = occ;
+                                });
+            }
+        }
+        else {
+            var occupant = new Occupant({name: occupantName, age: occupantAge, daysLeft: 14, notInDays: 0, currentLoc: req.cookies.shelterId});
+            occupant.save();
+            newOccupant = occupant;
+        }
+        Unit.update({name: req.body.name}, 
+                    { $set: {occupant: newOccupant, occupied: true}}, 
+                    function (err, unit) {
+                        Unit.findOne({name: req.body.name})
+                            .populate("occupant")
+                            .exec(function(err, unit) {
+                                console.log(unit);
+                                res.send({
+                                    success: true,
+                                    url: "/bedcount/homepage"
+                                });
+                            });
+
+        });
+    });
+});
+
+router.post('/get_beds', function (req, res) {
+    var result = {"beds": []};
+    var opts = [{path: 'maleUnits.occupant'}, 
+                {path: 'femaleUnits.occupant'}, 
+                {path: 'neutralUnits.occupant'}];
+
+    Beds.findOne({_id: req.cookies.beds})
+        .populate('maleUnits')
+        .populate('femaleUnits')
+        .populate('neutralUnits')
+        .exec(function (err, beds) {
+            Occupant.populate(beds, opts, function(err, beds) {
+                result.beds.push.apply(result.beds, beds.maleUnits);
+                result.beds.push.apply(result.beds, beds.femaleUnits);
+                result.beds.push.apply(result.beds, beds.neutralUnits);
+                res.send({
+                    success: true,
+                    beds: result
+                });
+            });
+        });
 });
 
 router.get('/updatebed', function (req, res) {
@@ -97,7 +203,6 @@ router.get('/updatebed', function (req, res) {
 });
 
 router.post('/updatebed', function (req, res) {
-    console.log(req.body);
     var occupantName = req.body.occupantName;
     var occupantAge = req.body.occupantAge;
 

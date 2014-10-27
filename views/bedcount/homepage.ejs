@@ -1,39 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Bedcount</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/homepage.js"></script>
+    <script src="/javascripts/bootbox.min.js"></script>
   </head>
   <body>
-    <h1>Your Bedcount</h1><br>
+    <h1>Your Bedcount</h1>
     <h2>Hello <%= shelterName %></h2>
-    <form method="post" action="/logout">
-  		<button id="logoutButton" type="submit">Log Out</button>
-  	</form><br><br>
+  	<button id="logout" type="button">Log Out</button><br><br>
 
     <a href="/shelter/features">Edit Shelter Settings</a><br><br>
 
-    <form method="get" action="/shelter/bed">
-      <button id="addBedButton" type="submit">New Bed</button>
-    </form><br><br>
+    <button id="addbed" type="button">New Bed</button><br><br>
 
     <p>Total Beds Available: Male - <%= bedObject.numberMale %>, Female - <%= bedObject.numberFemale %>, Gender Neutral - <%= bedObject.numberNeutral %></p> 
 
-    <ul type="none">
-      <% for (var bed in beds) { %>
-        <li><%= beds[bed].name + " (" + beds[bed].type + "): " %> 
-          <a href="/bedcount/occupantprofile?name=<%= beds[bed].occupant.name %>"><%= beds[bed].occupant.name %></a>
-          <%= " (" + beds[bed].occupant.daysLeft + " days left, " + beds[bed].occupant.notInDays + " NIT used)"%>
-          <form method="get" action="/shelter/updatebed">
-            <button type="submit" name="updateBed" value="<%= beds[bed].name %>">Update</button>
-          </form>
-<!--           <form method="get" action='/shelter/comment'>
-            <button type="submit" name="comment" value="<%= beds[bed].occupant.name %>">Comment</button>
-          </form> -->
+    <table id="bed-table"></table>
 
-        </li><br>
-      <% } %>
-    </ul>
+    <div id="error-message"></div>
 
   </body>
 </html>
