@@ -94,7 +94,6 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.success) {
 					insertBedToTable(data.bed);
-					// window.location.href = data.url;
 				}
 				else {
 					bootbox.alert(data.info);

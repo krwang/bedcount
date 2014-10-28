@@ -312,16 +312,46 @@ router.get('/comment', function (req, res) {
 });
 
 router.post('/comment', function (req, res) {
-    var person = req.cookies.commentOn;
-    res.clearCookie('commentOn');
+    // var person = req.cookies.commentOn;
+    // res.clearCookie('commentOn');
+    var person = req.body.occupant;
     var comment = req.body.comment;
 
     Occupant.update({name: person}, { $push: {comments: comment}}, function (err, doc) {
         Occupant.findOne({name: person}, function (err, person) {
-            res.location("/bedcount/homepage");
-            res.redirect("/bedcount/homepage");
+            // res.location("/bedcount/homepage");
+            // res.redirect("/bedcount/homepage");
+            if (person) {
+                res.send({
+                    success: true,
+                });
+            }
+            else {
+                res.send({
+                    success: false
+                });
+            }
         });
     });
+});
+
+router.get('/occupant', function (req, res) {
+    Occupant.findOne({name: req.query.name})
+            .populate('currentLoc')
+            .exec(function(err, person) {
+                if (person) {
+                    res.send({
+                        success: true,
+                        occupant: person
+                    });
+                }
+                else {
+                    res.send({
+                        success: false,
+                        info: "An error occured"
+                    });
+                }
+            });
 });
 
 module.exports = router;
