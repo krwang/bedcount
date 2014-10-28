@@ -12,7 +12,7 @@ $(document).ready(function() {
 		var occupant = row.insertCell(3);
 		occupantLink = document.createElement('a');
 		occupantLink.innerHTML = bed.occupant.name;
-		occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=bed.occupant.name");
+		occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=" + bed.occupant.name);
 		occupant.appendChild(occupantLink);
 
 		var updateButtonCell = row.insertCell(4);
@@ -30,8 +30,6 @@ $(document).ready(function() {
 					name: name
 				},
 				success: function(data) {
-					console.log(data);
-					console.log(data.unit.occupant.name);
 					if (data.success) {
 						bootbox.dialog({
 							title: "Update bed",
@@ -49,8 +47,6 @@ $(document).ready(function() {
 								success: {
 									label: "Save",
 									callback: function() {
-										console.log("UPDATED");
-										console.log($("#bedName").val());
 										updateBed($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val(), rowIndex);
 									}
 								}
