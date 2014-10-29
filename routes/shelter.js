@@ -297,9 +297,11 @@ router.post('/features', function (req, res) {
                                              numberNeutral: numberNeutral}},
                                     function(err, beds) {
                                         res.cookie('address', address);
-                                        res.send({
-                                            success: true
-                                        });
+                                        // res.send({
+                                        //     success: true
+                                        // });
+                                        res.location('/bedcount/homepage');
+                                        res.redirect('/bedcount/homepage');
                                     });
                    });
 });
