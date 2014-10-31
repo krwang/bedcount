@@ -10,24 +10,24 @@ var Occupant = models.Occupant;
 /* GET methods */
 
 router.get('/', function (req, res) {
-    // if (req.cookies.user == undefined || req.cookies.password == undefined){
-        res.render('landingpage');
-    // }
-  	// else{
-        // res.redirect('bedcount/homepage');
-    // }
+    if (req.cookies.user == undefined){
+        res.render('landingpage', {title: "Welcome"});
+    }
+  	else{
+        res.redirect('bedcount/homepage');
+    }
 });
 
 router.get('/landingpage', function (req, res) {
-	res.render('/landingpage');
+	res.render('/landingpage', {title: "Welcome"});
 });
 
 router.get('/login', function (req, res) {
-    res.render('login');
+    res.render('login', {title: "Login"});
 });
 
 router.get('/signup', function (req, res) {
-    res.render('signup');
+    res.render('signup', {title: "Signup"});
 });
 
 /* 
@@ -44,29 +44,25 @@ router.post('/login', function(req, res) {
                 success: false,
                 info: "An error occurred"
             });
-        }
-        else if (doc) {
+        } else if (doc) {
             // Authenticate with simple password check
             if (doc.password == password) {
 
                 // Save user data into cookie and redirect to twitter
                 res.cookie('shelter', shelterName);
-                res.cookie('password', password);
                 res.cookie('beds', doc.beds);
                 res.cookie('shelterId', doc._id);
                 res.send({
                     url: '/bedcount/homepage',
                     success: true
                 });
-            }
-            else {
+            } else {
                 res.send({
                     success: false,
                     info: "The sheltername or password is incorrect"
                 });
             }
-        }
-        else {
+        } else {
             res.send({
                 success: false,
                 info: "The sheltername or password is incorrect"
@@ -91,14 +87,12 @@ router.post('/signup', function(req, res) {
                 info: "There was a problem adding the information to the database.",
                 success: false
             });
-        }
-        else if (doc) {
+        } else if (doc) {
             res.send({
                 info: "An account already exists with that username.",
                 success: false
             });
-        }
-        else {
+        } else {
 
             // Create documents for tweets and following in their respective models
             // and bind the references to the new account document
@@ -111,12 +105,10 @@ router.post('/signup', function(req, res) {
                         info: "An error occured when creating a new account",
                         success: false,
                     });
-                }
-                else {
+                } else {
                      // Save user data in cookie and 
                      // redirect to the user homepage
                     res.cookie('shelter', shelterName);
-                    res.cookie('password', password);
                     res.cookie('beds', beds._id);
                     res.cookie('shelterId', doc._id);
                     res.send({
@@ -135,7 +127,6 @@ router.post('/signup', function(req, res) {
 */
 router.post('/logout', function(req, res) {
     res.clearCookie('shelter');
-    res.clearCookie('password');
     res.clearCookie('beds');
     res.clearCookie('shelterId');
     res.send({

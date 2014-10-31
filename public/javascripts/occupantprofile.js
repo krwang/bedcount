@@ -4,11 +4,8 @@ $(document).ready(function() {
 
 	var initPage = function(occupantName) {
 		$.ajax({
-			url: "/shelter/occupant",
+			url: "/shelter/occupant/"+occupantName,
 			type: "GET",
-			data: {
-				name: occupantName
-			},
 			success: function(data) {
 				if (data.success) {
 					loadData(data.occupant);

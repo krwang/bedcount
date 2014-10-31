@@ -22,7 +22,11 @@ $(document).ready(function() {
 		});
 	}
 
-	$("#signup").click(function() {
+	$("#btn-login").click(function() {
+		window.location.href = "/login";
+	});
+
+	$("#btn-signup").click(function() {
 		var data = {};
 		data["sheltername"] = $("#sheltername").val();
 		data["password"] = $("#password").val();
@@ -32,7 +36,7 @@ $(document).ready(function() {
 		signup(data); 
 	});
 
-	$("#phonenumber").keypress(function(e) {
+	$("#inp-signup-phone").keypress(function(e) {
 		var data = {}
 		data["sheltername"] = $("#sheltername").val();
 		data["password"] = $("#password").val();

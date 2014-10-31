@@ -20,15 +20,19 @@ $(document).ready(function() {
 		});
 	}
 
-	$("#login").click(function() {
-		var sheltername = $("#sheltername").val();
-		var password = $("#password").val();
+	$("#btn-signup").click(function() {
+		window.location.href = "/signup";
+	});
+
+	$("#btn-login").click(function() {
+		var sheltername = $("#inp-login-name").val();
+		var password = $("#inp-login-password").val();
 		login(sheltername, password);
 	});
 
-	$("#password").keypress(function(e) {
-		var sheltername = $("#sheltername").val();
-		var password = $("#password").val();
+	$("#inp-login-password").keypress(function(e) {
+		var sheltername = $("#inp-login-name").val();
+		var password = $("#inp-login-password").val();
 		if (e.keyCode === 13) {
 			login(sheltername, password);
 		}

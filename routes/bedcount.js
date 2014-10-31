@@ -34,7 +34,8 @@ router.get('/homepage', function (req, res) {
 				result.push.apply(result, beds.maleUnits);
 				result.push.apply(result, beds.femaleUnits);
 				result.push.apply(result, beds.neutralUnits);
-				res.render('bedcount/homepage', {"shelterName": req.cookies.shelter,"bedObject": beds});
+				console.log(req.cookies);
+				res.render('bedcount/homepage', {title: "Homepage", shelterName: req.cookies.shelter, bedObject: beds});
 			});
 		});
 });

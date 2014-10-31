@@ -1,16 +1,177 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+  text-decoration: none;
 }
 
-form {
-	display: inline;
+h1 {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-button {
-	display: inline;
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=tel] {
+    margin: 2px;
+    padding: 6px;
+    border: 1px solid #EEEEEE;
+    border-radius: 2px;
+}
+
+.input-large {
+    font-size: 16px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text-largest {
+    font-size: 24px;
+}
+
+.text-large {
+    font-size: 20px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.background {
+	opacity: .3;
+	width: 100%;
+}
+
+.form-label {
+    display: inline-block;
+    width: 50%;
+}
+
+.button {
+    /* size */
+    border: 0px;
+    border-radius: 2px;
+    padding: 8px 30px 8px 30px;
+    /* background */
+    background-color: rgb(150,200,136);
+    /* text */
+    font-size: 16px;
+    color: #FFFFFF;
+    /* cursor */
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.button:active {
+    /* background */
+    background-color: rgb(140,190,126);
+}
+
+.navbar {
+    /* position & size */
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 64px;
+    overflow: hidden;
+    z-index: 100;
+    /* background & shadow */
+    background-color: #FFFFFF;
+    box-shadow: 0px 1px 2px #555555;
+    /* text */
+    color: #000000;
+}
+
+.navbar-left {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.navbar-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+=}
+
+.navbar-brand {
+    /* position & size */
+    float: left;
+    height: 28px;
+    padding: 18px 10px 18px 10px;
+    /* text */
+    font-size: 20px;
+    /* cursor */
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.navbar-text {
+    /* position & size */
+    float: left;
+    height: 16px;
+    padding: 24px;
+    /* text */
+    font-size: 16px;
+}
+
+.navbar-input {
+    /* position & size */
+    float: left;
+    margin: 16px 2px 16px 2px !important;
+    /* text */
+    font-size: 16px;
+}
+
+.navbar-button {
+    /* position & size */
+    float: left;
+    height: 16px;
+    padding: 24px;
+    margin-right: 2px;
+    /* background */
+    background-color: #F7F7F7;
+    /* text */
+    font-size: 16px;
+    /* cursor */
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.navbar-button:active {
+    background-color: #F0F0F0;
+}
+
+.main-content {
+    /* position & size */
+    position: absolute;
+    top: 64px;
+    left: 0px;
+    right: 0px;
+    /*padding: 10px;*/
 }

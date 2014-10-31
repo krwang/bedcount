@@ -8,7 +8,7 @@ var Unit = models.Unit;
 var Occupant = models.Occupant;
 
 router.use(function(req, res, next) {
-    if(req.cookies.shelter) {
+    if (req.cookies.shelter) {
         next();
     } else {
         res.location("/");
@@ -20,14 +20,12 @@ router.get('/', function (req, res) {
     Shelter.findOne({shelterName: req.cookies.shelter})
            .populate("beds")
            .exec(function(err, shelter) {
-                console.log(shelter);
                 if (shelter) {
                     res.send({
                         success: true,
                         shelter: shelter
                     });
-                }
-                else {
+                } else {
                     res.send({
                         success: false,
                         info: "An error occured"
@@ -37,11 +35,10 @@ router.get('/', function (req, res) {
 });
 
 /* GET users listing. */
-router.get('/bed', function (req, res) {
-    Unit.findOne({name: req.query.name})
+router.get('/beds/:name', function (req, res) {
+    Unit.findOne({name: req.params.name})
         .populate("occupant")
         .exec(function(err, unit) {
-            console.log(unit);
             res.send({
                 success: true,
                 unit: unit
@@ -49,10 +46,10 @@ router.get('/bed', function (req, res) {
         });
 });
 
-router.post('/bed', function (req, res) {
+router.post('/beds/:name', function (req, res) {
 
     var type = req.body.gender;
-    var name = req.body.id;
+    var name = req.params.name;
 
     Unit.findOne({name: name}, function(err, unit) {
         if (unit) {
@@ -60,8 +57,7 @@ router.post('/bed', function (req, res) {
                 success: false,
                 info: "A bed with that name already exists"
             });
-        }
-        else {
+        } else {
             var none = new Occupant({name: "None", age: 0, daysLeft: 0});
             none.save();
             var unit = new Unit({type: type, name: name, occupied: false, occupant: none});
@@ -77,8 +73,7 @@ router.post('/bed', function (req, res) {
                                         success: false,
                                         info: "Error adding new bed"
                                     });
-                                }
-                                else {
+                                } else {
                                     Unit.findOne({_id: unit._id})
                                         .populate("occupant")
                                         .exec(function(err, bed) {
@@ -89,8 +84,7 @@ router.post('/bed', function (req, res) {
                                         });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             res.send({
                                 success: false,
                                 info: "Reached Maximum Beds"
@@ -103,14 +97,12 @@ router.post('/bed', function (req, res) {
                         if (beds.femaleUnits.length < beds.numberFemale) {
                             beds.femaleUnits.push(unit._id);  
                             beds.save(function(err, bed) {
-                                console.log(bed);
                                 if (err) {
                                     res.send({
                                         success: false,
                                         info: "Error adding new bed"
                                     });
-                                }
-                                else {
+                                } else {
                                     Unit.findOne({_id: unit._id})
                                         .populate("occupant")
                                         .exec(function(err, bed) {
@@ -121,8 +113,7 @@ router.post('/bed', function (req, res) {
                                         });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             res.send({
                                 success: false,
                                 info: "Reached Maximum Beds"
@@ -140,8 +131,7 @@ router.post('/bed', function (req, res) {
                                         success: false,
                                         info: "Error adding new bed"
                                     });
-                                }
-                                else {
+                                } else {
                                     Unit.findOne({_id: unit._id})
                                         .populate("occupant")
                                         .exec(function(err, bed) {
@@ -152,8 +142,7 @@ router.post('/bed', function (req, res) {
                                         });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             res.send({
                                 success: false,
                                 info: "Reached Maximum Beds"
@@ -166,43 +155,56 @@ router.post('/bed', function (req, res) {
      
 });
 
-router.put('/bed', function (req, res) {
+router.put('/beds/:name', function (req, res) {
     var occupantName = req.body.occupantName;
     var occupantAge = req.body.occupantAge;
 
     Occupant.findOne({name: occupantName}, function (err, occ) {
         var newOccupant;
         if (occ) {
-            if (req.body.notInTonight == "on") {
-                Occupant.update({name: occupantName},
-                                { $set: {age: occupantAge, notInDays: occ.notInDays + 1}},
-                                function (err, doc) {
-                                    newOccupant = occ;
-                                });
+            var notIn;
+            if (req.body.notInTonight == "off") {
+                notIn = occ.notInDays + 1;
+            } else {
+                notIn = occ.notInDays;
             }
-        }
-        else {
+            Occupant.update({name: occupantName},
+                            { $set: {age: occupantAge, notInDays: notIn}},
+                            function (err, doc) {
+                                newOccupant = occ;
+                                Unit.update({name: req.params.name}, 
+                                    { $set: {occupant: newOccupant, occupied: true}}, 
+                                    function (err, unit) {
+                                        Unit.findOne({name: req.params.name})
+                                            .populate("occupant")
+                                            .exec(function(err, unit) {
+                                                res.send({
+                                                    success: true,
+                                                    unit: unit,
+                                                });
+                                            });
+                                    });
+                            });
+        } else {
             var occupant = new Occupant({name: occupantName, age: occupantAge, daysLeft: 14, notInDays: 0, currentLoc: req.cookies.shelterId});
             occupant.save();
-            newOccupant = occupant;
-        }
-        Unit.update({name: req.body.name}, 
-                    { $set: {occupant: newOccupant, occupied: true}}, 
-                    function (err, unit) {
-                        Unit.findOne({name: req.body.name})
-                            .populate("occupant")
-                            .exec(function(err, unit) {
-                                res.send({
-                                    success: true,
-                                    unit: unit,
+            Unit.update({name: req.params.name}, 
+                        { $set: {occupant: occupant, occupied: true}}, 
+                        function (err, unit) {
+                            Unit.findOne({name: req.params.name})
+                                .populate("occupant")
+                                .exec(function(err, unit) {
+                                    res.send({
+                                        success: true,
+                                        unit: unit,
+                                    });
                                 });
-                            });
-
-        });
+            });
+        }
     });
 });
 
-router.post('/get_beds', function (req, res) {
+router.get('/beds', function (req, res) {
     var result = {"beds": []};
     var opts = [{path: 'maleUnits.occupant'}, 
                 {path: 'femaleUnits.occupant'}, 
@@ -225,54 +227,10 @@ router.post('/get_beds', function (req, res) {
         });
 });
 
-router.get('/updatebed', function (req, res) {
-    var bedName = req.query.updateBed;
-    Unit.findOne({ name: bedName })
-        .populate('occupant')
-        .exec(function (err, unit) {
-            if (unit.occupant) {
-                res.render('shelter/updatebed', {'bedName': bedName, 'occupant': unit.occupant.name, 'age': unit.occupant.age});
-            }
-            else {
-                res.render('shelter/updatebed', {'bedName': bedName, 'occupant': '', 'age': ''});
-            }
-        });
-});
-
-router.post('/updatebed', function (req, res) {
-    var occupantName = req.body.occupantName;
-    var occupantAge = req.body.occupantAge;
-
-    Occupant.findOne({name: occupantName}, function (err, occ) {
-        var newOccupant;
-        if (occ) {
-            if (req.body.notInTonight == "on") {
-                Occupant.update({name: occupantName},
-                                { $set: {age: occupantAge, notInDays: occ.notInDays + 1}},
-                                function (err, doc) {
-                                    newOccupant = occ;
-                                });
-            }
-        }
-        else {
-            var occupant = new Occupant({name: occupantName, age: occupantAge, daysLeft: 14, notInDays: 0, currentLoc: req.cookies.shelterId});
-            occupant.save();
-            newOccupant = occupant;
-        }
-        Unit.update({name: req.body.name}, 
-                    { $set: {occupant: newOccupant, occupied: true}}, 
-                    function (err, unit) {
-                        res.location('/bedcount/homepage');
-                        res.redirect('/bedcount/homepage');
-        });
-    });
-});
-
 router.get('/features', function (req, res) {
     Shelter.findOne({shelterName: req.cookies.shelter})
            .populate('beds')
            .exec(function(err, shelter) {
-                console.log(shelter);
                 res.render('shelter/features', {address: shelter.address, 
                                                     beds: shelter.beds});
             });
@@ -281,7 +239,6 @@ router.get('/features', function (req, res) {
 
 router.post('/features', function (req, res) {
 
-    console.log(req);
     var address = req.body.address;
     var numberMale = req.body.numberMale;
     var numberFemale = req.body.numberFemale;
@@ -327,8 +284,7 @@ router.post('/comment', function (req, res) {
                 res.send({
                     success: true,
                 });
-            }
-            else {
+            } else {
                 res.send({
                     success: false
                 });
@@ -337,8 +293,8 @@ router.post('/comment', function (req, res) {
     });
 });
 
-router.get('/occupant', function (req, res) {
-    Occupant.findOne({name: req.query.name})
+router.get('/occupant/:name', function (req, res) {
+    Occupant.findOne({name: req.params.name})
             .populate('currentLoc')
             .exec(function(err, person) {
                 if (person) {
@@ -346,8 +302,7 @@ router.get('/occupant', function (req, res) {
                         success: true,
                         occupant: person
                     });
-                }
-                else {
+                } else {
                     res.send({
                         success: false,
                         info: "An error occured"

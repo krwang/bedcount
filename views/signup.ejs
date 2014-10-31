@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Bedcount</title>
+    <head>
+        <% include _head %>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css'>
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/signup.js"></script>  
-  </head>
-  <body>
-    <h1>Create New Account</h1>
-    <div id="signup-inputs">
-    	<input id="sheltername" type="text" placeholder="Shelter Name"autofocus></input><br>
-      <input id="password" type="password" placeholder="Password"autocomplete="off"></input><br>
-<!--       <input id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="off"></input><br> -->
-    	<input id="emailaddress" type="email" placeholder="Email"></input><br>
-      <input id="phonenumber" type="tel" placeholder="Phone Number" autocomplete="off"></input><br>
-    	<button id="signup">Create</button>
-    </div>
-    <div id="error-message"></div>
-    <div id="login-link"><a href="/login">Already have an account?</a></div>
-  </body>
+        <script src="/javascripts/signup.js"></script>  
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-brand">Bedcount</div>
+            <div class="navbar-right">
+                <div id="btn-login" class="navbar-button">Log In</div>
+            </div>
+        </div>
+        <div class="main-content text-center">
+            <h1>Create New Account</h1>
+            <div id="signup-inputs">
+              	<input id="inp-signup-username" type="text" placeholder="Username" /><br>
+                <input id="inp-signup-password" type="password" placeholder="Password" /><br>
+                <input id="inp-signup-email" type="email" placeholder="Email" /><br>
+                <input id="inp-signup-phone" type="tel" placeholder="Phone Number" /><br>
+                <button id="btn-signup" class="button">Sign Up</button>
+            </div>
+            <div id="error-message"></div>
+            <div id="login-link"><a href="/login">Already have an account?</a></div>
+        </div>
+    </body>
 </html>

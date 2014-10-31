@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Bedcount</title>
+<html>
+    <head>
+      <% include _head %>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <h1>Bedcount</h1>
-    <p>Welcome to Bedcount</p>
-    <button id="addUserButton" onclick="location.href = 'signup';">New User</button>
-	  <button id="loginButton" onclick="location.href = 'login';">Login</button>
-  </body>
+      <script src="/javascripts/signup.js"></script>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-brand">Bedcount</div>
+            <div class="navbar-right">
+                <div id="btn-login" class="navbar-button">Log In</div>
+            </div>
+        </div>
+        <div class="main-content text-center">
+            <!-- <img class="background" src="/images/room.png"> -->
+            <h1>Bedcount</h1>
+            <span>Welcome to Bedcount!<br><br><span>
+            <input id="inp-signup-username" type="text" placeholder="Username" /><br>
+            <input id="inp-signup-password" type="password" placeholder="Password" /><br>
+            <input id="inp-signup-email" type="email" placeholder="Email" /><br>
+            <input id="inp-signup-phone" type="tel" placeholder="Phone Number" /><br>
+            <button id="btn-signup" class="button">Sign Up</button>
+        </div>
+
+    </body>
 </html>

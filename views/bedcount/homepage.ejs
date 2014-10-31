@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Bedcount</title>
+    <head>
+        <% include ../_head %>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/homepage.js"></script>
-    <script src="/javascripts/bootbox.min.js"></script>
-  </head>
-  <body>
-    <h1>Your Bedcount</h1>
-    <h2>Hello <%= shelterName %></h2>
-  	<button id="logout" type="button">Log Out</button><br><br>
+        <script src="/javascripts/bootbox.min.js"></script>
+        <script src="/javascripts/homepage.js"></script>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-brand">Bedcount</div>
+            <div class="navbar-right">
+                <div id="btn-logout" class="navbar-button">Log Out</div>
+            </div>
+        </div>
+        <div class="main-content text-center">
+            <h1>Your Bedcount</h1>
+            <h2>Hello <%= shelterName %></h2>
 
-    <button id="settings" type="button">Edit Shelter Settings</button><br><br>
+            <button id="settings" class="button">Edit Shelter Settings</button><br><br>
 
-    <button id="addbed" type="button">New Bed</button><br><br>
+            <button id="addbed" class="button">New Bed</button><br><br>
 
-    Total Beds Available:
-    <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
-    <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
-    <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
+            Total Beds Available:
+            <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
+            <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
+            <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
 
-    <table id="bed-table"></table>
+            <table id="bed-table"></table>
 
-    <div id="error-message"></div>
-
-  </body>
+            <div id="error-message"></div>
+        </div>
+    </body>
 </html>

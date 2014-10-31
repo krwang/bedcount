@@ -20,34 +20,24 @@ $(document).ready(function() {
 		updateButton.innerHTML = "Update";
 		updateButton.addEventListener('click', function(event) {
 			var rowIndex = document.elementFromPoint(event.x, event.y).parentNode.parentNode.rowIndex;
-			console.log(rowIndex);
-			console.log(table.rows[0]);
 			var name = table.rows[rowIndex].cells[0].innerText;
 			$.ajax({
-				url: "/shelter/bed",
+				url: "/shelter/beds/"+name,
 				type: "GET",
-				data: {
-					name: name
-				},
 				success: function(data) {
 					if (data.success) {
 						bootbox.dialog({
 							title: "Update bed",
-							message: '<form id="updateBedForm" name="addBed" method="POST" action="/shelter/updatebed">' +
-			      					 'Bed Name: <input type="text" id="bedName" name="name" value=' + name + '></input><br>' +
+							message: 'Bed Name: <input type="text" id="bedName" name="name" value=' + name + '></input><br>' +
 			      					 'Occupant Name: <input type="text" id="occupantName" name="occupantName" value="' + data.unit.occupant.name + '" autofocus></input><br>' +
 			      					 'Occupant Age: <input type="number" id="occupantAge" name="occupantAge" min="0" value=' + data.unit.occupant.age + '></input><br>' +
 			      					 'Duration of Stay: <input type="number" id="stayDuration" name="stayDuration" min="0" max="14" value=' + data.unit.occupant.daysLeft + '></input><br>' +
-			      					 'Not In Tonight: <input type="checkbox" id="notInTonight" name="notInTonight"></input><br>' +
-								     '</form>',
+			      					 'Not In Tonight: <input type="checkbox" id="notInTonight" name="notInTonight"></input><br>',
 							buttons: {
-								// cancel: {
-								// 	label: "Cancel",
-								// },
 								success: {
 									label: "Save",
 									callback: function() {
-										updateBed($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val(), rowIndex);
+										($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val(), rowIndex);
 									}
 								}
 							}
@@ -61,41 +51,38 @@ $(document).ready(function() {
 
 	var updateBed = function(bedName, occupantName, occupantAge, stayDuration, notInTonight, rowIndex) {
 		$.ajax({
-			url: "/shelter/bed",
+			url: "/shelter/beds/"+bedName,
 			type: "PUT",
 			data: {
-				name: bedName,
 				occupantName: occupantName,
 				occupantAge: occupantAge,
 				stayDuration: stayDuration,
 				notInTonight: notInTonight
 			},
 			success: function(data) {
+				console.log(data.unit);
 				if (data.success) {
 					var occupantLink = table.rows[rowIndex].cells[3].children[0];
 					occupantLink.innerHTML = data.unit.occupant.name;
 					occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=data.bed.occupant.name");
-				}
-				else {
+				} else {
 					bootbox.alert(data.info);
 				}
 			}
 		})
 	}
 
-	var addbed = function(gender, id) {
+	var addbed = function(gender, name) {
 		$.ajax({
-			url: "/shelter/bed",
+			url: "/shelter/beds/"+name,
 			type: "POST",
 			data: {
-				id: id,
 				gender: gender
 			},
 			success: function(data) {
 				if (data.success) {
 					insertBedToTable(data.bed);
-				}
-				else {
+				} else {
 					bootbox.alert(data.info);
 				}
 			}
@@ -104,8 +91,8 @@ $(document).ready(function() {
 
 	var getBeds = function() {
 		$.ajax({
-			url: "/shelter/get_beds",
-			type: "POST",
+			url: "/shelter/beds",
+			type: "GET",
 			dataType: "json",
 			success: function(data) {
 				console.log(data);
@@ -158,15 +145,25 @@ $(document).ready(function() {
 		});
 	}
 
+	$("#btn-logout").click(function() {
+		$.ajax({
+			url: "/logout",
+			type: "POST",
+			success: function(data) {
+				if (data.success) {
+					window.location.href = data.url;
+				}
+			}
+		})
+	});
+
 	$("#addbed").click(function() {
 		bootbox.dialog({
 			title: "Add a new bed.",
-			message: '<form id="addBedForm" name="addBed" method="post" action="/shelter/bed">' +
-      				 'Bed type: <input type="radio" id="gender_male" name="gender" value="male" checked>Male</input>' +
+			message: 'Bed type: <input type="radio" id="gender_male" name="gender" value="male" checked>Male</input>' +
                 	 '<input type="radio" id="gender_female" name="gender" value="female">Female</input>' +
                 	 '<input type="radio" id="gender_neutral" name="gender" value="neutral">Gender Neutral</input><br>' +
-      				 'Bed ID: <input type="text" id="bedId" name="id" autofocus></input><br>' +
-    				 '</form>',
+      				 'Bed ID: <input type="text" id="bedId" name="id" autofocus></input><br>',
     		buttons: {
     			success: {
     				label: "Save",
@@ -193,24 +190,8 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.success) {
 					promptSettings(data.shelter);
-				}
-				else {
+				} else {
 					$("#error-message").text(data.info);
-				}
-			}
-		});
-	});
-
-	$("#logout").click(function() {
-		$.ajax({
-			url: "/logout",
-			type: "POST",
-			success: function(data) {
-				if (data.success) {
-					window.location.href = data.url;
-				}
-				else {
-					$("#error-message").text("Something went wrong");
 				}
 			}
 		});

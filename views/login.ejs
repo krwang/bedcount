@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Bedcount</title>
+    <head>
+        <% include _head %>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/login.js"></script>
-  </head>
-  <body>
-    <h1>Login to Existing Account</h1>
-    <div id="login-inputs">
-    	<input id="sheltername" type="text" placeholder="Shelter Name" name="shelterName" autofocus></input><br>
-    	<input id="password" type="password" placeholder="Password" name="password" autocomplete="off"></input><br>
-    	<button id="login" type="button">Login</button>
-    </div>
-    <div id="error-message"></div>
-    <div id="signup-link"><a href="signup"> New to Bedcount? </a><div>
-  </body>
+        <script src="/javascripts/login.js"></script>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-brand">Bedcount</div>
+            <div class="navbar-right">
+                <div id="btn-signup" class="navbar-button">Sign Up</div>
+            </div>
+        </div>
+        <div class="main-content text-center">
+            <h1>Login to Existing Account</h1>
+            <div id="login-inputs">
+        	     <input id="inp-login-name" type="text" placeholder="Shelter Name" name="shelterName" autofocus></input><br>
+        	     <input id="inp-login-password" type="password" placeholder="Password" name="password" autocomplete="off"></input><br>
+        	     <button id="btn-login" class="button">Login</button>
+            </div>
+
+            <div id="error-message"></div>
+            <div id="signup-link"><a href="signup"> New to Bedcount? </a><div>
+        </div>
+    </body>
 </html>
