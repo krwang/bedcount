@@ -94,7 +94,7 @@ input[type=tel] {
     left: 0px;
     right: 0px;
     height: 64px;
-    overflow: hidden;
+    overflow: visible;
     z-index: 100;
     /* background & shadow */
     background-color: #FFFFFF;
@@ -113,7 +113,7 @@ input[type=tel] {
     position: absolute;
     top: 0px;
     right: 0px;
-=}
+}
 
 .navbar-brand {
     /* position & size */
@@ -167,6 +167,45 @@ input[type=tel] {
     background-color: #F0F0F0;
 }
 
+.navbar-dropdown {
+    /* position & size */
+    float: left;
+    height: 16px;
+    padding: 24px;
+    margin: 0px;
+    margin-right: 2px;
+    /* background */
+    background-color: #F7F7F7;
+    /* text */
+    font-size: 16px;
+    list-style: none;
+    overflow: visible;
+    /* cursor */
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.navbar-dropdown li {
+    display: none;
+}
+
+.navbar-dropdown:hover > li {
+    display: block;
+}
+
+.dropdown-button {
+    float: left;
+    height: 16px;
+    padding: 24px;
+    margin-right: 2px;
+    background-color: #F7F7F7;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 200;
+}
+
 .main-content {
     /* position & size */
     position: absolute;
@@ -174,4 +213,24 @@ input[type=tel] {
     left: 0px;
     right: 0px;
     /*padding: 10px;*/
+}
+
+.bed-table {
+    width: 90%;
+}
+
+.bed-table thead {
+    text-decoration: underline;
+}
+
+.bed-table tbody tr {
+    height: 40px;
+}
+/*
+.selected {
+    border: 10px solid black;
+}*/
+
+.table-input {
+    
 }

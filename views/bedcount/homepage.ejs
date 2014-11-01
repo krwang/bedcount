@@ -3,30 +3,42 @@
     <head>
         <% include ../_head %>
 
-        <script src="/javascripts/bootbox.min.js"></script>
         <script src="/javascripts/homepage.js"></script>
     </head>
     <body>
         <div class="navbar">
             <div class="navbar-brand">Bedcount</div>
             <div class="navbar-right">
-                <div id="btn-logout" class="navbar-button">Log Out</div>
+                <!-- <div id="btn-account" class="navbar-button">Account</div> -->
+                <ul class="navbar-dropdown">Account
+                    <li id="btn-settings" class="dropdown-button">Settings</li>
+                    <li id="btn-logout" class="dropdown-button">Logout</li>
+                </ul>
             </div>
         </div>
         <div class="main-content text-center">
             <h1>Your Bedcount</h1>
             <h2>Hello <%= shelterName %></h2>
 
-            <button id="settings" class="button">Edit Shelter Settings</button><br><br>
-
-            <button id="addbed" class="button">New Bed</button><br><br>
+            <button id="btn-addbed" class="button">New Bed</button><br><br>
 
             Total Beds Available:
             <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
             <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
             <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
 
-            <table id="bed-table"></table>
+            <table id="bed-table" class="bed-table">
+                <thead>
+                    <tr>
+                        <th>Bed</th>
+                        <th>Type</th>
+                        <th>Occupant</th>
+                        <th>Nights Left</th>
+                        <th>Not In Tonight</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
             <div id="error-message"></div>
         </div>

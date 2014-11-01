@@ -1,55 +1,26 @@
 $(document).ready(function() {
-	var table = document.getElementById('bed-table');
+	var table = document.getElementById('bed-table').getElementsByTagName('tbody')[0];
 
 	var insertBedToTable = function(bed) {
-		var row = table.insertRow(0);
+		var row = table.insertRow(-1);
+		row.className += " bed-row";
 		var bedName = row.insertCell(0);
 		bedName.innerHTML = bed.name;
 		var bedType = row.insertCell(1);
-		bedType.innerHTML = "(" + bed.type + ")";
-		var colon = row.insertCell(2);
-		colon.innerHTML = ":";
-		var occupant = row.insertCell(3);
+		bedType.innerHTML = bed.type;
+		var occupant = row.insertCell(2);
 		occupantLink = document.createElement('a');
 		occupantLink.innerHTML = bed.occupant.name;
 		occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=" + bed.occupant.name);
 		occupant.appendChild(occupantLink);
-
-		var updateButtonCell = row.insertCell(4);
-		var updateButton = document.createElement("button");
-		updateButton.innerHTML = "Update";
-		updateButton.addEventListener('click', function(event) {
-			var rowIndex = document.elementFromPoint(event.x, event.y).parentNode.parentNode.rowIndex;
-			var name = table.rows[rowIndex].cells[0].innerText;
-			$.ajax({
-				url: "/shelter/beds/"+name,
-				type: "GET",
-				success: function(data) {
-					if (data.success) {
-						bootbox.dialog({
-							title: "Update bed",
-							message: 'Bed Name: <input type="text" id="bedName" name="name" value=' + name + '></input><br>' +
-			      					 'Occupant Name: <input type="text" id="occupantName" name="occupantName" value="' + data.unit.occupant.name + '" autofocus></input><br>' +
-			      					 'Occupant Age: <input type="number" id="occupantAge" name="occupantAge" min="0" value=' + data.unit.occupant.age + '></input><br>' +
-			      					 'Duration of Stay: <input type="number" id="stayDuration" name="stayDuration" min="0" max="14" value=' + data.unit.occupant.daysLeft + '></input><br>' +
-			      					 'Not In Tonight: <input type="checkbox" id="notInTonight" name="notInTonight"></input><br>',
-							buttons: {
-								success: {
-									label: "Save",
-									callback: function() {
-										($("#bedName").val(), $("#occupantName").val(), $("#occupantAge").val(), $("#stayDuration").val(), $("#notInTonight").val(), rowIndex);
-									}
-								}
-							}
-						});
-					}
-				}
-			});
-		});
-		updateButtonCell.appendChild(updateButton);
+		var daysLeft = row.insertCell(3);
+		daysLeft.innerHTML = bed.occupant.daysLeft;
+		var notInTonight = row.insertCell(4);
+		notInTonight.innerHTML = bed.occupant.notInDays;
 	}
 
-	var updateBed = function(bedName, occupantName, occupantAge, stayDuration, notInTonight, rowIndex) {
+	var updateBed = function(bedName, occupantName, occupantAge, stayDuration, notInTonight) {
+		console.log(bedName);
 		$.ajax({
 			url: "/shelter/beds/"+bedName,
 			type: "PUT",
@@ -61,13 +32,6 @@ $(document).ready(function() {
 			},
 			success: function(data) {
 				console.log(data.unit);
-				if (data.success) {
-					var occupantLink = table.rows[rowIndex].cells[3].children[0];
-					occupantLink.innerHTML = data.unit.occupant.name;
-					occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=data.bed.occupant.name");
-				} else {
-					bootbox.alert(data.info);
-				}
 			}
 		})
 	}
@@ -145,6 +109,73 @@ $(document).ready(function() {
 		});
 	}
 
+	$(document).click(function(event) {
+		$(".selected").children(".button").remove();
+		$(".selected").toggleClass("selected");		
+	});
+
+	$("table tbody").click(function(event) {
+		if (event.target.tagName === "TD") {
+			event.stopPropagation();
+			$(".selected").children(".button").remove();
+			$(".selected").toggleClass("selected");
+			event.target.parentNode.className += " selected";
+			var updateButton = document.createElement("button");
+			updateButton.innerHTML = "Update";
+			updateButton.className += " button";
+			updateButton.addEventListener('click', function(e) {
+				e.stopPropagation();
+				$.ajax({
+					url: "/shelter/beds/"+name,
+					type: "GET",
+					success: function(data) {
+						if (data.success) {
+							for (var i = 0, cell; cell = e.target.parentNode.cells[i]; i++) {
+								if (i == 2) {
+									var currentValue = cell.children[0].innerHTML;
+								}
+								else {
+									var currentValue = cell.innerHTML;
+								}
+								cell.innerHTML = '';
+								var input = document.createElement("input");
+								input.type = "text";
+								input.value = currentValue;
+								cell.appendChild(input);
+							}
+							$(".selected").children(".button").remove();
+							var saveButton = document.createElement("button");
+							saveButton.innerHTML = "Save";
+							saveButton.className += " button";
+							saveButton.addEventListener('click', function(ev) {
+								ev.stopPropagation();
+								var newData = [];
+								for (var i = 0, cell; cell = event.target.parentNode.cells[i]; i++) {
+									var inputValue = cell.children[0].value;
+									newData.push(inputValue);
+									cell.removeChild(cell.children[0]);
+									if (i == 2) {
+										occupantLink = document.createElement('a');
+										occupantLink.innerHTML = inputValue;
+										occupantLink.setAttribute("href", "/bedcount/occupantprofile?name=" + inputValue);
+										cell.appendChild(occupantLink);
+									}
+									else {
+										cell.innerHTML = inputValue;
+									}
+								}
+								updateBed(newData[0], newData[2], 20, newData[3], newData[4]);
+								$(".selected").children(".button").remove();
+							});
+							event.target.parentNode.appendChild(saveButton);
+						}
+					}
+				});
+			});
+			event.target.parentNode.appendChild(updateButton);
+		}
+	});
+
 	$("#btn-logout").click(function() {
 		$.ajax({
 			url: "/logout",
@@ -157,7 +188,7 @@ $(document).ready(function() {
 		})
 	});
 
-	$("#addbed").click(function() {
+	$("#btn-addbed").click(function() {
 		bootbox.dialog({
 			title: "Add a new bed.",
 			message: 'Bed type: <input type="radio" id="gender_male" name="gender" value="male" checked>Male</input>' +
@@ -183,7 +214,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#settings").click(function() {
+	$("#btn-settings").click(function() {
 		$.ajax({
 			url: "/shelter",
 			type: "GET",
