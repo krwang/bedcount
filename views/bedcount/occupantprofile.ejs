@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/javascripts/jquery-1.11.1.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/occupantprofile.js"></script>
+    <head>
+        <% include ../_head %>
 
-    <title>Bedcount</title>
-  </head>
-  <body>
+        <script src="/javascripts/occupantprofile.js"></script>
+        <script src="/javascripts/navbar.js"></script>
+    </head>
+    <body>
 
-    <h1 id="name"><%= occupant.name %></h1>
-    <h4 id="age"></h4>
-    <h3 id="location"></h3>
+        <div class="navbar">
+            <div class="navbar-brand">Bedcount</div>
+            <div id="btn-homepage" class="navbar-button">Homepage</div>
+            <div class="navbar-right">
+                <ul class="navbar-dropdown">Account
+                    <li id="btn-settings" class="dropdown-button">Settings</li>
+                    <li id="btn-logout" class="dropdown-button">Logout</li>
+                </ul>
+            </div>
+        </div>
 
-    Comment: <input id="comment" type="text" name="comment" autofocus></input>
-    <button id="commentButton" type="button">Submit</button>
+        <div class="main-content text-center">
+            <h1 id="name"><%= occupant.name %></h1>
+            <h4 id="age"></h4>
+            <h3 id="location"></h3>
 
-    <ul id="commentList" type="none">
-    </ul>
+            Comment: <input id="comment" type="text" name="comment" autofocus></input>
+            <button id="commentButton" class="button">Submit</button>
 
-  </body>
+            <ul id="commentList" type="none">
+            </ul>
+        </div>
+
+     </body>
 </html>

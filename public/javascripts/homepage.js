@@ -111,7 +111,9 @@ $(document).ready(function() {
 
 	$(document).click(function(event) {
 		$(".selected").children(".button").remove();
-		$(".selected").toggleClass("selected");		
+		$(".selected").toggleClass("selected");
+		// document.getElementById("bed-table").style.width = "80%";
+		// $("td").width = "20%";
 	});
 
 	$("table tbody").click(function(event) {
@@ -120,6 +122,8 @@ $(document).ready(function() {
 			$(".selected").children(".button").remove();
 			$(".selected").toggleClass("selected");
 			event.target.parentNode.className += " selected";
+			// document.getElementById("bed-table").style.width = "88.5%";
+			// $("td").width = "16.6666666666%";
 			var updateButton = document.createElement("button");
 			updateButton.innerHTML = "Update";
 			updateButton.className += " button";
@@ -176,18 +180,6 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#btn-logout").click(function() {
-		$.ajax({
-			url: "/logout",
-			type: "POST",
-			success: function(data) {
-				if (data.success) {
-					window.location.href = data.url;
-				}
-			}
-		})
-	});
-
 	$("#btn-addbed").click(function() {
 		bootbox.dialog({
 			title: "Add a new bed.",
@@ -211,20 +203,6 @@ $(document).ready(function() {
     				}
     			}
     		}
-		});
-	});
-
-	$("#btn-settings").click(function() {
-		$.ajax({
-			url: "/shelter",
-			type: "GET",
-			success: function(data) {
-				if (data.success) {
-					promptSettings(data.shelter);
-				} else {
-					$("#error-message").text(data.info);
-				}
-			}
 		});
 	});
 

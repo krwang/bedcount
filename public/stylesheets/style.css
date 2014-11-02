@@ -167,19 +167,31 @@ input[type=tel] {
     background-color: #F0F0F0;
 }
 
-.navbar-dropdown {
-    /* position & size */
+.navbar-name {
     float: left;
     height: 16px;
+    padding: 24px;
+    margin-right: 2px;
+    /* text */
+    font-size: 16px;
+    /* cursor */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+}
+
+.navbar-dropdown {
+    /* position & size */
+    float: right;
+    height: 16px;
+    width: 58px;
     padding: 24px;
     margin: 0px;
     margin-right: 2px;
     /* background */
     background-color: #F7F7F7;
     /* text */
-    font-size: 16px;
     list-style: none;
-    overflow: visible;
     /* cursor */
     cursor: pointer;
     -webkit-user-select: none;
@@ -199,11 +211,7 @@ input[type=tel] {
     float: left;
     height: 16px;
     padding: 24px;
-    margin-right: 2px;
     background-color: #F7F7F7;
-    font-size: 16px;
-    cursor: pointer;
-    z-index: 200;
 }
 
 .main-content {
@@ -212,11 +220,10 @@ input[type=tel] {
     top: 64px;
     left: 0px;
     right: 0px;
-    /*padding: 10px;*/
 }
 
 .bed-table {
-    width: 90%;
+    width: 80%;
 }
 
 .bed-table thead {
@@ -226,6 +233,11 @@ input[type=tel] {
 .bed-table tbody tr {
     height: 40px;
 }
+
+td {
+    width: 20%;
+}
+
 /*
 .selected {
     border: 10px solid black;
@@ -233,4 +245,8 @@ input[type=tel] {
 
 .table-input {
     
+}
+
+.hidden {
+    display: none;
 }

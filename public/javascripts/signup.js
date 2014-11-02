@@ -12,6 +12,7 @@ $(document).ready(function() {
 			},
 			dataType: "json",
 			success: function(data) {
+				console.log(data);
 				if (data.success) {
 					window.location.href = data.url;
 				}
@@ -28,20 +29,20 @@ $(document).ready(function() {
 
 	$("#btn-signup").click(function() {
 		var data = {};
-		data["sheltername"] = $("#sheltername").val();
-		data["password"] = $("#password").val();
-		data["phone"] = $("#phonenumber").val();
-		data["email"] = $("#emailaddress").val();
+		data["sheltername"] = $("#inp-signup-sheltername").val();
+		data["password"] = $("#inp-signup-password").val();
+		data["phone"] = $("#inp-signup-phone").val();
+		data["email"] = $("#inp-signup-email").val();
 		data["address"] = "";
 		signup(data); 
 	});
 
 	$("#inp-signup-phone").keypress(function(e) {
 		var data = {}
-		data["sheltername"] = $("#sheltername").val();
-		data["password"] = $("#password").val();
-		data["phone"] = $("#phonenumber").val();
-		data["email"] = $("#emailaddres").val();
+		data["sheltername"] = $("#inp-signup-sheltername").val();
+		data["password"] = $("#inp-signup-password").val();
+		data["phone"] = $("#inp-signup-phone").val();
+		data["email"] = $("#inp-signup-email").val();
 		data["address"] = "";
 		if (e.keyCode === 13) {
 			signup(data); 

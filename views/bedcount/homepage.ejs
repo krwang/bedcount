@@ -4,12 +4,14 @@
         <% include ../_head %>
 
         <script src="/javascripts/homepage.js"></script>
+        <script src="/javascripts/navbar.js"></script>
     </head>
     <body>
         <div class="navbar">
             <div class="navbar-brand">Bedcount</div>
+            <div id="btn-homepage" class="navbar-button">Homepage</div>
             <div class="navbar-right">
-                <!-- <div id="btn-account" class="navbar-button">Account</div> -->
+                <div class="navbar-name"><%= shelterName %></div>
                 <ul class="navbar-dropdown">Account
                     <li id="btn-settings" class="dropdown-button">Settings</li>
                     <li id="btn-logout" class="dropdown-button">Logout</li>
@@ -17,28 +19,33 @@
             </div>
         </div>
         <div class="main-content text-center">
-            <h1>Your Bedcount</h1>
-            <h2>Hello <%= shelterName %></h2>
+            <div id="bed-view">
+                <h1>Your Bedcount</h1>
 
-            <button id="btn-addbed" class="button">New Bed</button><br><br>
+                <button id="btn-addbed" class="button">New Bed</button><br><br>
 
-            Total Beds Available:
-            <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
-            <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
-            <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
+                Total Beds Available:
+                <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
+                <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
+                <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
 
-            <table id="bed-table" class="bed-table">
-                <thead>
-                    <tr>
-                        <th>Bed</th>
-                        <th>Type</th>
-                        <th>Occupant</th>
-                        <th>Nights Left</th>
-                        <th>Not In Tonight</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+                <table id="bed-table" class="bed-table">
+                    <thead>
+                        <tr>
+                            <th>Bed</th>
+                            <th>Type</th>
+                            <th>Occupant</th>
+                            <th>Nights Left</th>
+                            <th>Not In Tonight</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="account-settings" class="hidden">
+                HEllo world
+            </div>
 
             <div id="error-message"></div>
         </div>

@@ -41,13 +41,11 @@ router.get('/homepage', function (req, res) {
 });
 
 router.get('/occupantprofile', function (req, res) {
-	console.log(req.query);
 	res.cookie('commentOn', req.query.name);
 	Occupant.findOne({name: req.query.name})
 			.populate('currentLoc')
 			.exec(function (err, occ) {
-				console.log(occ);
-				res.render('bedcount/occupantprofile', {occupant: occ});
+				res.render('bedcount/occupantprofile', {occupant: occ, title: occ.name});
 			});
 });
 

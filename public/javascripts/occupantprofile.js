@@ -58,11 +58,13 @@ $(document).ready(function() {
 
 	$("#commentButton").click(function() {
 		sendComment($("#comment").val(), person);
+		$("#comment").val("");
 	});
 
 	$("#comment").keypress(function(e) {
 		if (e.keyCode === 13) {
 			sendComment($("#comment").val(), person);
+			$("#comment").val("");
 		}
 	});
 

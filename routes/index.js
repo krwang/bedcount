@@ -75,13 +75,16 @@ router.post('/login', function(req, res) {
 router.post('/signup', function(req, res) {
 
     // Get our form values. These rely on the "name" attributes
+    console.log(req.body);
     var shelterName = req.body.sheltername;
     var password = req.body.password;
     var email = req.body.email;
-    var phoneNumber = req.body.phoneNumber;
+    var phoneNumber = req.body.phone;
 
     // If there is no account with username, the find should return a null doc
     Shelter.findOne({shelterName: shelterName}, function (err, doc) {
+        console.log("Searching");
+        console.log(doc);
         if (err) {
             res.send({
                 info: "There was a problem adding the information to the database.",
@@ -100,6 +103,8 @@ router.post('/signup', function(req, res) {
             beds.save();
             var account = new Shelter({shelterName: shelterName, address: '', password: password, email: email, phoneNumber: phoneNumber, beds: beds});
             account.save(function (err, doc) {
+                console.log("saving");
+                console.log(doc);
                 if (err) {
                     res.send({
                         info: "An error occured when creating a new account",
@@ -112,7 +117,7 @@ router.post('/signup', function(req, res) {
                     res.cookie('beds', beds._id);
                     res.cookie('shelterId', doc._id);
                     res.send({
-                        url: '/shelter/features',
+                        url: '/bedcount/homepage',
                         success: true
                     });                  
                 }
