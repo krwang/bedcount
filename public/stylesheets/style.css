@@ -250,3 +250,7 @@ td {
 .hidden {
     display: none;
 }
+
+#account-settings div {
+    display: inline-block;
+}

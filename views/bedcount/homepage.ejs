@@ -25,9 +25,9 @@
                 <button id="btn-addbed" class="button">New Bed</button><br><br>
 
                 Total Beds Available:
-                <div id="numberMale">Male - <%= bedObject.numberMale %></div> 
-                <div id="numberFemale">Female - <%= bedObject.numberFemale %></div> 
-                <div id="numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
+                <div id="bed-numberMale">Male - <%= bedObject.numberMale %></div> 
+                <div id="bed-numberFemale">Female - <%= bedObject.numberFemale %></div> 
+                <div id="bed-numberNeutral">Neutral - <%= bedObject.numberNeutral %></div><br>
 
                 <table id="bed-table" class="bed-table">
                     <thead>
@@ -44,7 +44,13 @@
             </div>
 
             <div id="account-settings" class="hidden">
-                HEllo world
+                <h1>Shelter Settings</h1>
+                Shelter Name: <div id="settings-shelterName"></div><br>
+                Shelter Address: <div id="settings-address"></div><br>
+                Phone Number: <div id="settings-phone"></div><br>
+                Available Male Beds: <div id="settings-availableMale"></div><br>
+                Available Female Beds: <div id="settings-availableFemale"></div><br>
+                Available Gender Neutral Beds: <div id="settings-availableNeutral"></div><br>
             </div>
 
             <div id="error-message"></div>
