@@ -31,7 +31,9 @@ $(document).ready(function() {
 				notInTonight: notInTonight
 			},
 			success: function(data) {
-				console.log(data.unit);
+				if (data.success) {
+					console.log("UPDATED!");
+				}
 			}
 		})
 	}
@@ -47,7 +49,7 @@ $(document).ready(function() {
 				if (data.success) {
 					insertBedToTable(data.bed);
 				} else {
-					bootbox.alert(data.info);
+					alert(data.info);
 				}
 			}
 		});
@@ -80,18 +82,24 @@ $(document).ready(function() {
 				numberNeutral: neutralBeds
 			},
 			success: function(data) {
+				console.log(data);
 				if (data.success) {
-					$("#numberMale").text("Male - " + $("#maleBeds").val());
-					$("#numberFemale").text("Female - " + $("#femaleBeds").val());
-					$("#numberNeutral").text("Neutral - " + $("#neutralBeds").val());		
+					$("#bed-numberMale").text("Male - " + maleBeds);
+					$("#bed-numberFemale").text("Female - " + femaleBeds);
+					$("#bed-numberNeutral").text("Neutral - " + neutralBeds);
+					console.log($("#bed-view"));
+					$("#bed-view").toggleClass("hidden");
+					$("#account-settings").toggleClass("hidden");		
 				}
 			}
 		});
 	}
 
 	$(document).click(function(event) {
-		$(".selected").children(".button").remove();
-		$(".selected").toggleClass("selected");
+		if (!$(".selected").hasClass("editing")) {
+			$(".selected").children(".button").remove();
+			$(".selected").toggleClass("selected");
+		}
 		// document.getElementById("bed-table").style.width = "80%";
 		// $("td").width = "20%";
 	});
@@ -128,6 +136,7 @@ $(document).ready(function() {
 								cell.appendChild(input);
 							}
 							$(".selected").children(".button").remove();
+							$(".selected").addClass("editing");
 							var saveButton = document.createElement("button");
 							saveButton.innerHTML = "Save";
 							saveButton.className += " button";
@@ -148,6 +157,7 @@ $(document).ready(function() {
 										cell.innerHTML = inputValue;
 									}
 								}
+								console.log(newData);
 								updateBed(newData[0], newData[2], 20, newData[3], newData[4]);
 								$(".selected").children(".button").remove();
 							});
@@ -161,29 +171,44 @@ $(document).ready(function() {
 	});
 
 	$("#btn-addbed").click(function() {
-		bootbox.dialog({
-			title: "Add a new bed.",
-			message: 'Bed type: <input type="radio" id="gender_male" name="gender" value="male" checked>Male</input>' +
-                	 '<input type="radio" id="gender_female" name="gender" value="female">Female</input>' +
-                	 '<input type="radio" id="gender_neutral" name="gender" value="neutral">Gender Neutral</input><br>' +
-      				 'Bed ID: <input type="text" id="bedId" name="id" autofocus></input><br>',
-    		buttons: {
-    			success: {
-    				label: "Save",
-    				callback: function() {
-    					var checked = $("#gender_male").val();
-    					if ($("#gender_female").is(":checked")) {
-    						checked = $("#gender_female").val();
-    					}
-    					if ($("#gender_neutral").is(":checked")) {
-    						checked = $("#gender_neutral").val();
-    					}
-    					var id = $("#bedId").val();
-    					addbed(checked, id);
-    				}
-    			}
-    		}
-		});
+		$("#bed-view").toggleClass("hidden");
+		$("#new-bed").toggleClass("hidden");
+	});
+
+	$("#inp-bedId").keypress(function(e) {
+		var checked = $("#inp-gender-male").val();
+		if ($("#inp-gender-female").is(":checked")) {
+			checked = $("#inp-gender-female").val();
+		} else if ($("inp-gender-neutral").is(":checked")) {
+			checked = $("#inp-gender-neutral").val();
+		}
+		var id = $("#inp-bedId").val();
+
+		if (e.keyCode === 13) {
+			addbed(checked, id);
+
+			$("#new-bed").toggleClass("hidden");
+			$("#bed-view").toggleClass("hidden");			
+		}
+	});
+
+	$("#btn-submit-addbed").click(function() {
+		var checked = $("#inp-gender-male").val();
+		if ($("#inp-gender-female").is(":checked")) {
+			checked = $("#inp-gender-female").val();
+		} else if ($("inp-gender-neutral").is(":checked")) {
+			checked = $("#inp-gender-neutral").val();
+		}
+		var id = $("#inp-bedId").val();
+		addbed(checked, id);
+
+		$("#new-bed").toggleClass("hidden");
+		$("#bed-view").toggleClass("hidden");
+	});
+
+	$("#btn-submit-settings").click(function() {
+		console.log("clicked");
+		sendFeatures($("#settings-address").val(), $("#settings-availableMale").val(), $("#settings-availableFemale").val(), $("#settings-availableNeutral").val());
 	});
 
 });

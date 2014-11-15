@@ -51,13 +51,13 @@ router.post('/beds/:name', function (req, res) {
     var type = req.body.gender;
     var name = req.params.name;
 
-    Unit.findOne({name: name}, function(err, unit) {
-        if (unit) {
-            res.send({
-                success: false,
-                info: "A bed with that name already exists"
-            });
-        } else {
+    // Unit.findOne({name: name}, function(err, unit) {
+    //     if (unit) {
+    //         res.send({
+    //             success: false,
+    //             info: "A bed with that name already exists"
+    //         });
+    //     } else {
             var none = new Occupant({name: "None", age: 0, daysLeft: 0});
             none.save();
             var unit = new Unit({type: type, name: name, occupied: false, occupant: none});
@@ -150,11 +150,12 @@ router.post('/beds/:name', function (req, res) {
                         }
                     });
             }
-        }
-    });
+    //     }
+    // });
      
 });
 
+// CONSIDER USING UPSERT
 router.put('/beds/:name', function (req, res) {
     var occupantName = req.body.occupantName;
     var occupantAge = req.body.occupantAge;
@@ -162,45 +163,27 @@ router.put('/beds/:name', function (req, res) {
     Occupant.findOne({name: occupantName}, function (err, occ) {
         var newOccupant;
         if (occ) {
-            var notIn;
+            var notIn = occ.notInDays;
             if (req.body.notInTonight == "off") {
-                notIn = occ.notInDays + 1;
-            } else {
-                notIn = occ.notInDays;
+                notIn += 1;
             }
-            Occupant.update({name: occupantName},
-                            { $set: {age: occupantAge, notInDays: notIn}},
-                            function (err, doc) {
-                                newOccupant = occ;
-                                Unit.update({name: req.params.name}, 
-                                    { $set: {occupant: newOccupant, occupied: true}}, 
-                                    function (err, unit) {
-                                        Unit.findOne({name: req.params.name})
-                                            .populate("occupant")
-                                            .exec(function(err, unit) {
-                                                res.send({
-                                                    success: true,
-                                                    unit: unit,
-                                                });
-                                            });
-                                    });
-                            });
-        } else {
-            var occupant = new Occupant({name: occupantName, age: occupantAge, daysLeft: 14, notInDays: 0, currentLoc: req.cookies.shelterId});
-            occupant.save();
-            Unit.update({name: req.params.name}, 
-                        { $set: {occupant: occupant, occupied: true}}, 
-                        function (err, unit) {
-                            Unit.findOne({name: req.params.name})
-                                .populate("occupant")
-                                .exec(function(err, unit) {
-                                    res.send({
-                                        success: true,
-                                        unit: unit,
-                                    });
-                                });
-            });
+            occ.age = occupantAge;
+            occ.notInDays = notIn;
+            occ.save();
+            newOccupant = occ;
+        } 
+        else {
+            newOccupant = new Occupant({name: occupantName, age: occupantAge, daysLeft: 14, notInDays: 0, currentLoc: req.cookies.shelterId});
+            newOccupant.save();
         }
+        Unit.update({name: req.params.name}, 
+            {$set: {occupant: newOccupant}}, 
+            {multi: true},
+            function (err, num) {
+                res.send({
+                    success: true,
+                });
+        });
     });
 });
 
@@ -254,11 +237,9 @@ router.post('/features', function (req, res) {
                                              numberNeutral: numberNeutral}},
                                     function(err, beds) {
                                         res.cookie('address', address);
-                                        // res.send({
-                                        //     success: true
-                                        // });
-                                        res.location('/bedcount/homepage');
-                                        res.redirect('/bedcount/homepage');
+                                        res.send({
+                                            success: true
+                                        });
                                     });
                    });
 });
@@ -271,15 +252,11 @@ router.get('/comment', function (req, res) {
 });
 
 router.post('/comment', function (req, res) {
-    // var person = req.cookies.commentOn;
-    // res.clearCookie('commentOn');
     var person = req.body.occupant;
     var comment = req.body.comment;
 
     Occupant.update({name: person}, { $push: {comments: comment}}, function (err, doc) {
         Occupant.findOne({name: person}, function (err, person) {
-            // res.location("/bedcount/homepage");
-            // res.redirect("/bedcount/homepage");
             if (person) {
                 res.send({
                     success: true,

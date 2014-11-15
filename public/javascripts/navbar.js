@@ -24,12 +24,12 @@ $(document).ready(function() {
 					var shelter = data.shelter;
 					var beds = data.shelter.beds;
 					$("#bed-view").addClass("hidden");
-					$("#settings-shelterName").text(shelter.shelterName);
-					$("#settings-address").text(shelter.address);
-					$("#settings-phone").text(shelter.phoneNumber);
-					$("#settings-availableMale").text(beds.numberMale);
-					$("#settings-availableFemale").text(beds.numberFemale);
-					$("#settings-availableNeutral").text(beds.numberNeutral);
+					$("#settings-shelterName").val(shelter.shelterName);
+					$("#settings-address").val(shelter.address);
+					$("#settings-phone").val(shelter.phoneNumber);
+					$("#settings-availableMale").val(beds.numberMale);
+					$("#settings-availableFemale").val(beds.numberFemale);
+					$("#settings-availableNeutral").val(beds.numberNeutral);
 					$("#account-settings").removeClass("hidden");
 				}
 				else {

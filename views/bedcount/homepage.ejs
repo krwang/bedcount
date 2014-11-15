@@ -45,12 +45,22 @@
 
             <div id="account-settings" class="hidden">
                 <h1>Shelter Settings</h1>
-                Shelter Name: <div id="settings-shelterName"></div><br>
-                Shelter Address: <div id="settings-address"></div><br>
-                Phone Number: <div id="settings-phone"></div><br>
-                Available Male Beds: <div id="settings-availableMale"></div><br>
-                Available Female Beds: <div id="settings-availableFemale"></div><br>
-                Available Gender Neutral Beds: <div id="settings-availableNeutral"></div><br>
+                Shelter Name: <input id="settings-shelterName"></input><br>
+                Shelter Address: <input id="settings-address"></input><br>
+                Phone Number: <input id="settings-phone"></input><br>
+                Available Male Beds: <input id="settings-availableMale"></input><br>
+                Available Female Beds: <input id="settings-availableFemale"></input><br>
+                Available Gender Neutral Beds: <input id="settings-availableNeutral"></input><br><br>
+                <button id="btn-submit-settings" class="button">Save</button>
+            </div>
+
+            <div id="new-bed" class="hidden">
+                <h1>Add a New Bed</h1>
+                Bed type:   <input type="radio" id="inp-gender-male" name="gender" value="male" checked>Male</input>
+                            <input type="radio" id="inp-gender-female" name="gender" value="female">Female</input>
+                            <input type="radio" id="inp-gender-neutral" name="gender" value="neutral">Gender Neutral</input><br>
+                Bed ID: <input type="text" id="inp-bedId" name="id" autofocus></input><br><br>
+                <button id="btn-submit-addbed" class="button">Create</button>
             </div>
 
             <div id="error-message"></div>

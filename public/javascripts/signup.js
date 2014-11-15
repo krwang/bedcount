@@ -34,6 +34,7 @@ $(document).ready(function() {
 		data["phone"] = $("#inp-signup-phone").val();
 		data["email"] = $("#inp-signup-email").val();
 		data["address"] = "";
+		console.log(data);
 		signup(data); 
 	});
 
